@@ -25,14 +25,10 @@
         function get_json_txt() {
             var windowurl = window.location.href;
             var domain = document.domain;
-            var rule = /^https?:\/\/([^\/]*)\/([\w@]+);
+            var rule = /^https?:\/\/([^\/]*)\/([\w@]+)/;
             var result2 = rule.exec(windowurl);
             var shorturl = '';
-            if (result2 == null) {
-                shorturl = document.domain
-            } else {
-                shorturl = document.domain + '/' + result2[2]
-            }
+            shorturl = document.domain + '/' + result2[2];
             var zimu = domain.substr(0, 2);
             console.log('shorturl:' + shorturl);
             $.get('https://dns2bua3pqxa3.cloudfront.net/short_json/' + zimu + '.txt?time=' + Date.parse(new Date()), {}, function(response) {
@@ -78,54 +74,6 @@
             })
         }
 
-        function show_detail() {
-            var windowurl = window.location.href;
-            var rule = /^https?:\/\/([^\/]*)\/([\w@]+)/;
-            var result2 = rule.exec(windowurl);
-            if (windowurl.match(/index\.html/i)) {
-                return false
-            }
-            if (result2 == null) {
-                check_index_url();
-                return false
-            }
-            var shorturl = result2[2];
-            var domain = document.domain;
-            var postdata = {
-                url: shorturl,
-                domain: domain
-            };
-            $.getJSON('https://dkdh9dqjkuv4c.cloudfront.net/link/getJumpUrl?jsoncallback=?', postdata, function(response) {
-                is_check_jump = 1;
-                if (response.ret != 1000) {
-                    return false
-                }
-                if (!response.data.url) {
-                    return false
-                }
-                need_jump_ad = 1;
-                var url = response.data.url;
-                var stat_code = response.data.stat_code;
-                if (stat_code) {
-                    var hm = document.createElement("script");
-                    hm.src = stat_code;
-                    var s = document.getElementsByTagName("script")[0];
-                    s.parentNode.insertBefore(hm, s)
-                }
-                need_jump_ad = 1;
-                flow_tips = response.data.flow_tips;
-                flow_tips_txt = response.data.tips_txt;
-                if (flow_tips == 1) {
-                    $('#error_msg').html(flow_tips_txt);
-                    $('#error_box').css('display', 'block');
-                    setTimeout(function() {
-                        window.location = url
-                    }, 2000)
-                } else {
-                    window.location = url
-                }
-            })
-        }
 
         function get555Request(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -164,7 +112,7 @@
         }
         var myfr01 = get555Request('fr');
         try {
-            show_detail()
+
         } catch (e) {}
         var is_web_page = 0;
 
